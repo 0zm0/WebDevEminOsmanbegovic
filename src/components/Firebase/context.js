@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { auth } from "./firebase";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const AuthContext = React.createContext()
 
@@ -9,10 +10,19 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState()
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)   
 
     function signUp(email, password) {
-        return auth.createUserWithEmailAndPassword(email, password);
+      const db = getFirestore()
+      try {
+        const docRef =  addDoc(collection(db, "users"), {
+          email: email
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+      return auth.createUserWithEmailAndPassword(email, password);
     }
 
     function logIn(email, password){
@@ -45,7 +55,7 @@ export function AuthProvider({ children }) {
         logIn,
         signUp,
         logOut,
-        resetPassword
+        resetPassword,
     }
 
     return (
