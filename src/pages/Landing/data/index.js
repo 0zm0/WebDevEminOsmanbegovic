@@ -24,8 +24,22 @@ export const users = [
     { user: "User2", image: ProfilePicture}
 ]
 
+
+export const posts = [
+    {profile: ProfilePicture, user: "User1"},
+    {profile: ProfilePicture, user: "User2"},
+    {profile: ProfilePicture, user: "User3"},
+    {profile: ProfilePicture, user: "User4"}
+]
+
 export default function getData() {
     return {
         users
+    }
+}
+
+export function getPosts(){
+    return {
+        posts
     }
 }
